@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: [:show, :edit]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
   def index
     @questions = Question.all
   end
@@ -17,8 +17,25 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.create(question_params)
-    redirect_to @question
+    @question = Question.new(question_params)
+    if @question.save
+      redirect_to @question
+    else
+      render :new
+    end
+  end
+
+  def update
+    if @question.update(question_params)
+      redirect_to @question
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @question.destroy
+    redirect_to question_path
   end
 
   private
@@ -30,3 +47,4 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title, :body)
   end
 end
+ 
