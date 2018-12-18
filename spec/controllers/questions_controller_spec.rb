@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let (:question) { create(:question)}
+  let (:user) {create(:user)}
+  
   describe 'GET #index' do
     let(:questions) {create_list(:question, 3)}
     before { get :index }
@@ -26,6 +28,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+
+    before { login(user) }
+
     before { get :new }
     it 'assigns a new question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
