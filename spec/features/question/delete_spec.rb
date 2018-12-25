@@ -3,35 +3,29 @@ require 'rails_helper'
 feature 'User can delete your own question' do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
-  TODO 'question with author'
+  given(:another_user) { create(:user) }
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
-    background do
-      sign_in(user)
-      visit questions_path
-      #click_on 'Delete question'
-    end
 
     scenario 'can delete your own question' do
-      #fill_in 'Title', with: 'Test question'
-      #fill_in 'Body', with: 'Text text text'
-      #click_on 'Ask'
-      #expect(page).to have_content 'Your question succefully created.'
-      #expect(page).to have_content 'Test question'
-      #expect(page).to have_content 'Text text text'
+      sign_in(user)
+      visit question_path(question)
+      click_on 'Delete question'
+      expect(page).to have_no_content(question.title)
     end
 
     scenario "can't delete another author's questions"  do
-      #click_on 'Ask'
-      #expect(page).to have_content "Title can't be blank"
+      sign_in(another_user)
+      visit question_path(question)
+      expect(page).to have_no_content('Delete question')
     end
+
   end
 
   scenario "Unauthenticated user can't delete any questions" do
-    #visit questions_path
-    #click_on 'Ask question'
-    #expect(page).to have_content 'You need to sign in or sign up before continuing.'
-  end                           
+    visit question_path(question)
+    expect(page).to have_no_content('Delete question')
+end                           
 
 end
