@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can delete your own question' do
+feature 'Delete questions. ' do
 
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given(:question) { create(:question, author: user) }
 
   describe 'Authenticated user' do
 
