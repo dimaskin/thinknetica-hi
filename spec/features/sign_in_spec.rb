@@ -29,5 +29,3 @@ feature 'User can sign in', %q{
   end
 
 end
-
-#24.30
