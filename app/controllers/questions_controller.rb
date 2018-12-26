@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
-    @answers = @question.answers.select(&:persisted?)
   end
 
   def new
