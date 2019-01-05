@@ -1,18 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let (:question) { create(:question) }
+  
+  let (:user) { create(:user) }
+  let (:question) { create(:question, author: user) }
+  let (:answer) { create(:answer, author: user)}
 
   describe 'GET #new' do
-      before { get :new, params: {question_id: question}}
-      it 'assigns a new answer to @answer' do
-        expect(assigns(:answer)).to be_a_new(Answer)
-      end
-  
-      it 'renders new view' do
-        expect(response).to render_template :new
-      end
+    before { get :new, params: {question_id: question}}
+
+    it 'assigns a new answer to @answer' do
+      login(user)
+      expect(assigns(:answer)).to be_a_new(Answer)
     end
+
+    it 'renders new view' do
+      expect(response).to render_template :new
+    end
+  end
  
   describe 'POST #create' do
     context 'with valid attributes' do
